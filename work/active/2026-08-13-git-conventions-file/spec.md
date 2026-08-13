@@ -49,10 +49,12 @@ ticket (expose-last); under `trunk`, this is what keeps unfinished features invi
 users of a continuously deployed default branch.
 
 BR-8: Every owned concept has exactly one home, per ID-6's ownership split: the
-declaration-line format and commit-type vocabulary in the template, branching and landing
-procedures (with the mode tokens and `trunk` fallback they key on) in the implement and
-ship skills respectively, the expose-last rationale in the shape skill, the artifact entry
-in the workflow doc; everything else points instead of restating. Instantiated per-repo
+declaration-line format and commit-type vocabulary in the template, branching procedures
+in the implement skill, landing procedures in the ship skill, the expose-last rationale in
+the shape skill, the artifact entry in the workflow doc; everything else points instead of
+restating. The mode tokens and the `trunk` fallback are shared keys, not owned concepts —
+each skill states them where its steps branch on them (AC-4 requires this), and one-home
+applies to definitions and procedures only. Instantiated per-repo
 copies of the template — including this repo's dogfood `docs/agents/git.md` — are
 instances, not second owners, and are exempt from the one-copy checks.
 
