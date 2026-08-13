@@ -96,17 +96,14 @@ verdict block's `backlog` list instead.
 
 Post one PR review via `gh api repos/{owner}/{repo}/pulls/{pr}/reviews` — a single call so
 the verdict body and every line-anchored comment land as one artifact. Follow
-protocol.md's contract exactly: the body composition rule (counts, one-line verification
-result, non-anchored finding details, the `<!-- agentic:verdict -->` block), the per-finding
-budgets (15-word titles, 3-sentence details, path:line evidence, quoting source only when
-the exact wording is the defect), and the `comments` array (path, line, side) for every
-finding whose subject is a changed line (ID-5). The Claim/Evidence/Break format is retired —
-its content maps into the 3-sentence detail budget instead.
+protocol.md's contract exactly: the body composition rule, the per-finding budgets, and the
+`comments` array (path, line, side) for every finding whose subject is a changed line
+(ID-5). The Claim/Evidence/Break format is retired — its content maps into the detail
+budget instead.
 
-**Event**: `request-changes` when you authenticate as a non-author account and the verdict
-carries at least one blocker; `comment` in every other case — GitHub restricts an author
-reviewing their own PR to comment, and this reviewer never posts `approve` regardless of
-account: Accept belongs to the human.
+**Event**: follow protocol.md's account rules exactly. Never post `approve`, regardless of
+account or blocker count — Accept belongs to the human, not something this reviewer can
+hand itself.
 
 Your chat return is the only prose that reaches the human — one line:
 

@@ -49,8 +49,7 @@ Echo the inferred mode (or "explicit PR #N" when an argument was given) before a
 
 ## 3. Act
 
-**No-op** (`fixes-pending` or `awaiting-accept`, and any case where the latest verdict's
-`sha` already equals the head SHA you'd be reviewing): take no action — no re-run of
+**No-op** (`fixes-pending` or `awaiting-accept`): take no action — no re-run of
 verification, no post. Report the state and the next command per step 4, and stop.
 
 **Full review** (`needs-review`): read the PR body for the bundle permalink, then follow
@@ -69,11 +68,9 @@ only side effect a review round makes.
 
 ## 4. Close out
 
-Report the fully-qualified next command:
+Compute `<command>` for the reviewer's one-line chat return (format in `agents/reviewer.md`'s
+Report step):
 
-- Any verdict just posted (or the latest existing one, for a no-op) with `blockers` above
-  zero → `/implement fix <PR>`.
+- `blockers` above zero — the verdict just posted, or the latest existing one for a
+  no-op — → `/implement fix <PR>`.
 - Zero blockers → no skill command; the PR is ready for the human's Accept (merge).
-
-The reviewer's one-line chat return (`<b> blockers, <c> concerns, <n> nits on PR #<N> →
-next: <command>`) carries this close-out — it is the only prose that reaches the human.
