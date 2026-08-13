@@ -47,6 +47,7 @@ Never hand yourself one of these: priorities, decomposition, and acceptance are 
 docs/                           # durable — accumulates and stays current
   decisions/                    # immutable decision records
   research/                     # findings from discovery — evidence, not commitments
+  agents/git.md                 # branch strategy + commit and PR conventions, scaffolded at setup
   agentic-workflow.md           # this file
 
 GLOSSARY.md                     # durable — canonical domain vocabulary (per-domain in monorepos)
@@ -93,6 +94,21 @@ caretaker.
 **`AGENTS.md`** — canonical for repo-wide conventions and gotchas, for every agentic tool;
 `CLAUDE.md`, where a repo uses one, references it rather than duplicating it (never both). A
 monorepo gets one per-package too, at `packages/<pkg>/AGENTS.md`, for area-specific content.
+
+**`docs/agents/git.md`** — the repo's agent-facing git conventions: branch strategy,
+commit-message convention, PR conventions, release-promotion mechanics. Scaffolded by `setup`,
+which asks the strategy question; agents read it before any git operation and follow it —
+skills never restate what it declares. The strategy is one declaration line matching
+`Branch strategy: (trunk|bundle-branch)`; a missing file or absent declaration means `trunk`.
+Under **`trunk`**, each ticket branch cuts from the default branch's head and its PR targets
+the default branch. Shape orders a feature bundle's tickets **expose-last** — internals first,
+user-visible wiring in the final ticket — which is what keeps unfinished features invisible to
+users when merging the default branch deploys it. Under **`bundle-branch`**, a directory
+bundle's tickets branch from and PR into the bundle's integration branch
+`<bundle-id>/integration` (a bare `<bundle-id>` ref would collide with the ticket refs beneath
+it); each ticket still passes review individually, and ship lands the integration branch on
+the default branch once the bundle completes. A single-file bundle behaves as `trunk` in
+either mode — its one PR is already a whole feature.
 
 **`docs/decisions/`** — immutable; supersede with a new record, never edit. For anything durable and expensive to relitigate. Template lives with the `decision` skill.
 
