@@ -17,6 +17,9 @@ Conventional Commits — `type(scope): subject`.
 
 ## PR conventions
 
+- Title: same shape as a commit subject — `type(scope): summary`, imperative,
+  ≤ 72 characters. Squash merge turns the title into the target branch's commit message,
+  so this keeps history in one convention rather than two.
 - Merge method: squash — one commit per ticket on the target branch.
 
 <!-- Repo-specific additions only (title format, labels, review requirements). The
