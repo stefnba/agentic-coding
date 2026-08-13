@@ -7,22 +7,21 @@ depends_on: []
 
 ## Scope
 
-`docs/agentic-workflow.md` gains, in its artifacts section, a `docs/agents/git.md`
-pointer paragraph per ID-6 — at most two sentences: the artifact, its content areas, that
-setup scaffolds it, the read-before-git-operations trigger, both mode tokens, the
-missing-file `trunk` fallback — plus a layout-tree line. Mode procedures and the
-declaration format deliberately do not live here (amended at implement: they belong to
-the skills and the template). Keep it generic — no reference to this repo's decision
-records; the doc is copied verbatim into consuming repos.
+`docs/agentic-workflow.md` gains, in its artifacts section, a one-sentence
+`docs/agents/git.md` entry per ID-6 — the file and its four content areas, nothing more —
+plus a layout-tree line. Mode tokens, procedures, fallback, and the declaration format
+deliberately do not live here (amended at implement: they belong to the skills and the
+template). Keep it generic — no reference to this repo's decision records; the doc is
+copied verbatim into consuming repos.
 
 ## Done when
 
-- `grep -c "bundle-branch" docs/agentic-workflow.md` ≥ 1 and `grep "trunk"
-  docs/agentic-workflow.md` hits the missing-file fallback
-- `grep -c "agents/git.md" docs/agentic-workflow.md` ≥ 2 (the artifact paragraph and the
+- `grep -c "agents/git.md" docs/agentic-workflow.md` ≥ 2 (the artifact entry and the
   layout-tree line)
-- `grep "Branch strategy: (trunk|bundle-branch)" docs/agentic-workflow.md` returns
-  nothing (format owned by the template, AC-1)
+- `grep "branch strategy" docs/agentic-workflow.md` hits the entry's content list
+- `grep -c "bundle-branch" docs/agentic-workflow.md` returns 0 and `grep "Branch
+  strategy: (trunk|bundle-branch)" docs/agentic-workflow.md` returns nothing (owned by
+  skills and template, AC-1)
 - AC-1 passes
 
 ## Not in this ticket

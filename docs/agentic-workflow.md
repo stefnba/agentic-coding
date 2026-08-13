@@ -95,10 +95,8 @@ caretaker.
 `CLAUDE.md`, where a repo uses one, references it rather than duplicating it (never both). A
 monorepo gets one per-package too, at `packages/<pkg>/AGENTS.md`, for area-specific content.
 
-**`docs/agents/git.md`** — the repo's agent-facing git conventions, scaffolded by `setup`:
-the declared branch strategy (`trunk` or `bundle-branch`; missing file means `trunk`),
-commit-message convention, PR conventions, release promotion. Agents read it before any git
-operation, and skills never restate what it declares.
+**`docs/agents/git.md`** — the repo's agent-facing git conventions, including the declared
+branch strategy, commit-message convention, PR conventions, release promotion.
 
 **`docs/decisions/`** — immutable; supersede with a new record, never edit. For anything durable and expensive to relitigate. Template lives with the `decision` skill.
 

@@ -80,14 +80,13 @@ ID-5: The template ships as a setup asset, bare scaffold with slot guidance in H
 comments per the skill-mechanics asset rules — no preamble, nothing outside comments that
 can't land verbatim in a consuming repo.
 
-ID-6: Ownership split: the workflow doc carries only a one-to-two-sentence artifact
-pointer — what the file is, that setup scaffolds it, the read-before-git-operations
-trigger, both mode tokens, and the missing-file `trunk` fallback; the template owns the
-declaration format and the commit vocabulary; mode procedures (branch sources, PR
-targets, integration naming, the single-file exemption) live as steps in the
-implement/ship skills; `git.md` instances hold the repo's choice plus repo-specific
-mechanics; the AGENTS.md pointer names the read trigger. Skills reference, never
-restate.
+ID-6: Ownership split: the workflow doc carries a one-sentence artifact entry naming the
+file and its four content areas, nothing more; the AGENTS.md pointer owns the
+read-before-git-operations trigger; the template owns the declaration format and the
+commit vocabulary; mode tokens, procedures (branch sources, PR targets, integration
+naming, the single-file exemption), and the missing-file `trunk` fallback live as steps
+in the implement/ship skills; `git.md` instances hold the repo's choice plus
+repo-specific mechanics. Skills reference, never restate.
 
 ID-7: Ship in `bundle-branch` mode runs absorb and delete on the integration branch, then
 lands it by opening a PR from the integration branch to the default branch and merging that
@@ -123,10 +122,9 @@ else (BR-8); prior art for a grep gate: the ship skill's bundle-ID absorb check.
 ## 6. Acceptance Criteria
 
 AC-1 (BR-8, BR-4): Given `docs/agentic-workflow.md`, when read, then its git.md artifact
-paragraph is at most two sentences naming the artifact, both mode tokens, the
-read-before-git-operations trigger, and the missing-file `trunk` fallback — and the
-literal declaration format `Branch strategy: (trunk|bundle-branch)` appears in the
-template only.
+entry is one sentence naming the file and its four content areas — no mode tokens, no
+declaration format, no fallback; those appear only in the implement/ship skills and the
+template per ID-6.
 
 AC-2 (BR-1, BR-2): Given `skills/setup/SKILL.md`, when reading its ask and write steps,
 then the strategy question appears with both options, two-line costs, and `trunk` marked
