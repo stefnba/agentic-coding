@@ -19,6 +19,9 @@ prose scanning; human comments carry no markers and are invisible to parsing. Ro
 increment per verdict, starting at 1; the latest verdict is the marker-bearing review with
 the highest `round`, and a fix-round report answers the verdict of the same round number.
 
+The YAML blocks below annotate each field with a `#` comment describing its shape; those comments are notes for the reader, not part of the artifact — a posted block carries only
+the data.
+
 A marker whose YAML block does not parse or lacks a required field fails loud: the session
 reports what it could not parse and stops — state is never reconstructed from prose, comment
 threads, or timestamps. A PR with no verdict marker at all is not an error; it is the
