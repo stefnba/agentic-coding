@@ -48,11 +48,13 @@ BR-7: Shape orders a feature bundle's tickets so user-visible wiring lands in th
 ticket (expose-last); under `trunk`, this is what keeps unfinished features invisible to
 users of a continuously deployed default branch.
 
-BR-8: The strategy definitions, the declaration-line format, and the commit-type vocabulary
-each live in exactly one shipped document; every other skill or template points instead of
-restating. Instantiated per-repo copies of the template — including this repo's dogfood
-`docs/agents/git.md` — are instances, not second owners, and are exempt from the
-one-copy checks.
+BR-8: Every owned concept has exactly one home, per ID-6's ownership split: the
+declaration-line format and commit-type vocabulary in the template, branching and landing
+procedures (with the mode tokens and `trunk` fallback they key on) in the implement and
+ship skills respectively, the expose-last rationale in the shape skill, the artifact entry
+in the workflow doc; everything else points instead of restating. Instantiated per-repo
+copies of the template — including this repo's dogfood `docs/agents/git.md` — are
+instances, not second owners, and are exempt from the one-copy checks.
 
 BR-9: This repo dogfoods the artifact: its own `docs/agents/git.md` declares `trunk` and
 Conventional Commits, and its AGENTS.md carries the pointer.
@@ -163,6 +165,6 @@ the pointer line.
 - Migration tooling for consuming repos that already ran setup — a re-run of setup is the
   path; build nothing else.
 - No changes to the review, critique, or backlog skills.
-- No GLOSSARY.md entries — the workflow doc owns `trunk` and `bundle-branch` once this
-  ships.
+- No GLOSSARY.md entries — `trunk` and `bundle-branch` are declaration keys defined where
+  the skills use them (ID-6), not domain vocabulary.
 - Don't restructure the agents-reference block beyond adding the one pointer line.
