@@ -96,19 +96,17 @@ caretaker.
 monorepo gets one per-package too, at `packages/<pkg>/AGENTS.md`, for area-specific content.
 
 **`docs/agents/git.md`** — the repo's agent-facing git conventions: branch strategy,
-commit-message convention, PR conventions, release-promotion mechanics. Scaffolded by `setup`,
-which asks the strategy question; agents read it before any git operation and follow it —
-skills never restate what it declares. The strategy is one declaration line matching
-`Branch strategy: (trunk|bundle-branch)`; a missing file or absent declaration means `trunk`.
-Under **`trunk`**, each ticket branch cuts from the default branch's head and its PR targets
-the default branch. Shape orders a feature bundle's tickets **expose-last** — internals first,
-user-visible wiring in the final ticket — which is what keeps unfinished features invisible to
-users when merging the default branch deploys it. Under **`bundle-branch`**, a directory
-bundle's tickets branch from and PR into the bundle's integration branch
-`<bundle-id>/integration` (a bare `<bundle-id>` ref would collide with the ticket refs beneath
-it); each ticket still passes review individually, and ship lands the integration branch on
-the default branch once the bundle completes. A single-file bundle behaves as `trunk` in
-either mode — its one PR is already a whole feature.
+commit-message convention, PR conventions, release promotion. Scaffolded by `setup`; agents
+read it before any git operation, and skills never restate what it declares. One line
+declares the strategy, matching `Branch strategy: (trunk|bundle-branch)`; a missing file or
+line means `trunk`. **`trunk`**: ticket branches cut from the default branch's head and PR
+back into it; shape orders feature tickets **expose-last** — internals first, user-visible
+wiring in the final ticket — so a continuously deployed default branch never shows a
+half-finished feature. **`bundle-branch`**: a directory bundle's tickets branch from and PR
+into `<bundle-id>/integration` (a bare `<bundle-id>` ref would collide with the ticket refs
+beneath it), each PR reviewed as usual; ship lands the integration branch on the default
+branch when the bundle completes. A single-file bundle is always `trunk` — its one PR is
+already a whole feature.
 
 **`docs/decisions/`** — immutable; supersede with a new record, never edit. For anything durable and expensive to relitigate. Template lives with the `decision` skill.
 
