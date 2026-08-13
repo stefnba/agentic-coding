@@ -19,8 +19,8 @@ records; the doc is copied verbatim into consuming repos.
 
 - `grep -c "bundle-branch" docs/agentic-workflow.md` ≥ 1 and `grep "trunk"
   docs/agentic-workflow.md` hits the missing-file fallback
-- `grep "docs/agents/git.md" docs/agentic-workflow.md` hits the paragraph and the tree
-  line
+- `grep -c "agents/git.md" docs/agentic-workflow.md` ≥ 2 (the artifact paragraph and the
+  layout-tree line)
 - `grep "Branch strategy: (trunk|bundle-branch)" docs/agentic-workflow.md` returns
   nothing (format owned by the template, AC-1)
 - AC-1 passes
