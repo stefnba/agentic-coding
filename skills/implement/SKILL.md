@@ -1,19 +1,24 @@
 ---
 name: implement
-description: Execute one ticket from a shaped bundle until its done-when passes — TDD at the spec's agreed seam, then verify, reconcile, and open the PR. Invoke fresh per ticket with the bundle ID, optionally naming a ticket number; without one, the next unblocked todo ticket is taken.
-argument-hint: "[bundle id] [ticket NN]"
+description: Execute one ticket from a shaped bundle until its done-when passes — TDD at the spec's agreed seam, then verify, reconcile, and open the PR — or run a fix round against an open PR's review findings. Resolves bundle, ticket, PR, and mode from the current branch with no arguments; `<bundle id> [ticket NN]` or `fix <PR> [F<id> ...]` name a target explicitly.
+argument-hint: "[bundle id] [ticket NN] | fix <PR> [F<id> ...]"
 disable-model-invocation: true
 ---
 
-# Implement one ticket
+# Implement
 
 **Executor role**: turn one settled ticket into a verified, reconciled change set on its own
-branch, ending at an open PR. Everything decidable was decided upstream — the spec passed the
-human's Plan gate — so the ticket, the spec, and the code are the full input. Stage definitions
-(verify, reconcile, where review sits) live in
-[docs/agentic-workflow.md](../../docs/agentic-workflow.md); this skill doesn't restate them.
+branch, ending at an open PR — or, once review has posted findings on that PR, turn its
+verdict into a fix round. Everything decidable was decided upstream — the spec passed the
+human's Plan gate, and in fix mode the reviewer already ruled each finding's tier and class —
+so the ticket, or the verdict, is the full input. Stage definitions (verify, reconcile, where
+review sits) live in [docs/agentic-workflow.md](../../docs/agentic-workflow.md); the
+review-fix loop's shared contracts — markers, the verdict and fix-round schemas, tiers,
+classes, loop state, the round cap — live in
+[skills/review/references/protocol.md](../review/references/protocol.md). Neither is restated
+here.
 
-Two rules apply across every step:
+Two rules apply across every step of ticket mode:
 
 **Test-first at the agreed seam.** The spec's `Testing Decisions` section names the seam — the
 observable boundary the human confirmed during shaping (in a single-file bundle, the `Seam:`
@@ -33,16 +38,37 @@ disagreement decides the move:
 
 ## Process
 
-### 1. Resolve the bundle and pick the ticket
+### 1. Resolve mode and target
 
-**Resolve the bundle** with `ls work/*/$ARGUMENTS*`. A single `.md` file is the whole bundle —
-spec and ticket merged; its `Done when` is the ticket. A directory bundle: read `spec.md` in
-full, then the ticket. No match or two bundles matching — ask, don't guess.
+**Zero arguments resolve from the current branch first** (ID-7): a branch matching
+`<bundle-id>/NN-<slug>` (single-file bundle: `<bundle-id>`) names the bundle and ticket, and
+its open PR, if any, is the PR. On the default branch, resolve the bundle first — exactly one
+in the in-progress tree, else exactly one shaped, else ask, don't guess — then the PR: exactly
+one open PR on the bundle's branches drives mode inference; several → ask, listing each with
+its state; none → ticket mode on the next unblocked ticket.
 
-**Pick the ticket**: the one named in the invocation, otherwise the lowest-numbered ticket with
-`status: todo` whose `depends_on` entries are all `done`. If the named ticket has an unmet
-dependency, stop and report it — ticket order is part of the approved decomposition, not yours
-to reshuffle.
+**Mode follows the PR's loop state** (BR-5, protocol reference): `fixes-pending` → fix mode
+against that PR; any other state, or no PR → ticket mode. Explicit arguments override
+inference: `/implement fix <PR> [F<id> ...]` forces fix mode against the named PR — trailing
+finding IDs direct the round at named concerns or nits beyond the default blocker set (ID-6);
+`/implement <bundle id> [ticket NN]` forces ticket mode, resolving the bundle with
+`ls work/*/<bundle id>*` (a single `.md` file is the whole bundle, spec and ticket merged; a
+directory bundle: read `spec.md` in full, then the ticket).
+
+**Echo the resolved mode and target before acting.** If the resolved mode's state doesn't
+call for action — fix mode on a PR with nothing pending, ticket mode with no unblocked ticket
+— report the state and the next command and stop without side effects (BR-11).
+
+**A verdict marker present on the PR with a block that doesn't parse, or missing a required
+field, fails loud**: report what didn't parse and stop (BR-12). No marker at all is not an
+error — it's `needs-review`, which routes to ticket mode.
+
+Ticket mode continues at step 2. Fix mode is its own section, below step 7.
+
+**Pick the ticket** (ticket mode): the one named in the invocation, otherwise the
+lowest-numbered ticket with `status: todo` whose `depends_on` entries are all `done`. If the
+named ticket has an unmet dependency, stop and report it — ticket order is part of the
+approved decomposition, not yours to reshuffle.
 
 ### 2. Activate
 
@@ -122,5 +148,38 @@ the default branch under `trunk`, `<bundle-id>/integration` under `bundle-branch
 the bundle dies at ship; the permalink survives it. The PR body carries the verify results and
 names what reconcile touched, so review can judge the reconcile half's honesty.
 
+**Print the next command** (BR-11): `/review <PR>`.
+
 **Stop there.** Review is the next stage and a human gate: no merging, no self-review, no
 starting the next ticket — the next ticket gets a fresh session.
+
+## Fix mode
+
+Runs fresh on the PR's branch, entered on `fixes-pending` state or explicitly via
+`/implement fix <PR> [F<id> ...]` (ID-6). Markers, the verdict and fix-round schemas, tiers,
+classes, and the round cap are defined once in
+[the protocol reference](../review/references/protocol.md); this section states only the
+procedure.
+
+1. **Cap check** (BR-9). Count fix-round reports already posted on this PR. At 3, refuse a
+   fourth: report the unresolved findings and what each round tried, and stop — the human
+   takes over. The cap never triggers a merge and is never silently continued past.
+2. **Checkout.** Fetch and check out the PR's branch. The branch only moves forward from here
+   — no force-push, no rewrite of pushed commits (BR-14); this round adds commits only.
+3. **Select findings** (BR-6). Every open `blocker` from the latest verdict, plus any concern
+   or nit named as a trailing argument (ID-6).
+4. **Work each selected finding** (BR-3, BR-7). `mechanical` — fix it. `decision` — do not
+   attempt a fix; escalate. A fix round may escalate a mechanical finding to `decision`, never
+   the reverse, and never resolves a `decision` finding itself. An escalated finding is only
+   usable by a later round once the human's ruling is recorded in the bundle (a spec
+   amendment) or a decision record — never only in chat; until then it stays escalated. Nits
+   touched by the same code may be batch-fixed while already there; concerns and nits not
+   selected are reported `deferred`.
+5. **Re-verify.** Re-run the ticket's affected done-when lines plus the repo's checks. A fix
+   that cannot reach green is dropped and its finding escalated, not pushed.
+6. **Push and report.** Push only once the branch re-verifies green. Copy the verdict's
+   `backlog` list into `work/backlog.md`. Post one fix-round report (ID-3) giving every open
+   finding ID an explicit status — a finding left out is a protocol violation the next review
+   flags.
+7. **Close out.** Print the next command (BR-11): `/review <PR>`. Stop there — re-review is
+   the next stage and a human-triggered gate, same as after a ticket's PR.
