@@ -116,10 +116,10 @@ mislead the next session. Done when: no document in the repo describes the pre-c
 
 **Set `status: done`** — legitimate only while every `Done when` line holds.
 
-**Commit, push the branch, open the PR** — commit messages follow the commit convention in
-`docs/agents/git.md`, and the PR targets the declared mode's branch: the default branch
-under `trunk`, `<bundle-id>/integration` under `bundle-branch` (single-file bundle: the
-default branch either way). Reference the bundle by permalink, never bare path —
+**Commit, push the branch, open the PR** — commit messages and the PR title both follow
+the conventions in `docs/agents/git.md`, and the PR targets the declared mode's branch:
+the default branch under `trunk`, `<bundle-id>/integration` under `bundle-branch`
+(single-file bundle: the default branch either way). Reference the bundle by permalink, never bare path —
 the bundle dies at ship; the permalink survives it. The PR body carries the verify results and
 names what reconcile touched, so review can judge the reconcile half's honesty.
 
