@@ -49,10 +49,9 @@ to reshuffle.
 **Move a fresh bundle to active**: if the bundle still sits under `work/shaped/`, `git mv` it
 to `work/active/` — starting its first ticket is what "in progress" means.
 
-**Read `docs/agents/git.md` and take the branch strategy it declares** — the branch source
-here and the PR target at close-out both key on it. A missing file or absent declaration
-line means `trunk`. A single-file bundle takes the `trunk` path in either mode — its one
-PR already lands whole.
+**Read `docs/agents/git.md` and take the branch strategy it declares.** A missing file or
+absent declaration line means `trunk`. A single-file bundle takes the `trunk` path in
+either mode — its one PR already lands whole.
 
 **Under `bundle-branch`, sync the bundle's integration branch before branching**: the
 branch is `<bundle-id>/integration`, created from the default branch's head when the
