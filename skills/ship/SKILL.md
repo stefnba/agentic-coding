@@ -64,12 +64,12 @@ no tombstone file.
 branch — just push); ship's own commits follow the commit convention in
 `docs/agents/git.md`.
 
-**Under `bundle-branch`, then land the integration branch**: open a PR from
-`<bundle-id>/integration` to the default branch and merge it immediately. That PR is
-mechanical, not a review object — every ticket PR already passed the Accept gate
-individually; the PR form exists to satisfy protected-branch rules a direct push would
-violate. A merge conflict in that landing stops ship — surface it to the human
-immediately; resolving it is theirs.
+**Under `bundle-branch` — except for a single-file bundle, which has no integration branch
+to land — then land the integration branch**: open a PR from `<bundle-id>/integration` to
+the default branch and merge it immediately. That PR is mechanical, not a review object —
+every ticket PR already passed the Accept gate individually; the PR form exists to satisfy
+protected-branch rules a direct push would violate. A merge conflict in that landing stops
+ship — surface it to the human immediately; resolving it is theirs.
 
 **Then check out the default branch, pull, and run the repo's checks** — full suite,
 lint, typecheck, whatever the repo's CI runs. Done when: every check passes
