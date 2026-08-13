@@ -164,8 +164,8 @@ procedure.
 1. **Cap check** (BR-9). Count fix-round reports already posted on this PR. At 3, refuse a
    fourth: report the unresolved findings and what each round tried, and stop — the human
    takes over. The cap never triggers a merge and is never silently continued past.
-2. **Checkout.** Fetch and check out the PR's branch. The branch only moves forward from here
-   — no force-push, no rewrite of pushed commits (BR-14); this round adds commits only.
+2. **Checkout.** Fetch and check out the PR's branch, adding commits only — take the
+   branch's history rules from `docs/agents/git.md`, same as ticket mode's Activate step.
 3. **Select findings** (BR-6). Every open `blocker` from the latest verdict, plus any concern
    or nit named as a trailing argument (ID-6).
 4. **Work each selected finding** (BR-3, BR-7). `mechanical` — fix it. `decision` — do not
