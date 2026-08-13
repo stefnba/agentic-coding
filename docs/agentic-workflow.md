@@ -95,18 +95,10 @@ caretaker.
 `CLAUDE.md`, where a repo uses one, references it rather than duplicating it (never both). A
 monorepo gets one per-package too, at `packages/<pkg>/AGENTS.md`, for area-specific content.
 
-**`docs/agents/git.md`** — the repo's agent-facing git conventions: branch strategy,
-commit-message convention, PR conventions, release promotion. Scaffolded by `setup`; agents
-read it before any git operation, and skills never restate what it declares. One line
-declares the strategy, matching `Branch strategy: (trunk|bundle-branch)`; a missing file or
-line means `trunk`. **`trunk`**: ticket branches cut from the default branch's head and PR
-back into it; shape orders feature tickets **expose-last** — internals first, user-visible
-wiring in the final ticket — so a continuously deployed default branch never shows a
-half-finished feature. **`bundle-branch`**: a directory bundle's tickets branch from and PR
-into `<bundle-id>/integration` (a bare `<bundle-id>` ref would collide with the ticket refs
-beneath it), each PR reviewed as usual; ship lands the integration branch on the default
-branch when the bundle completes. A single-file bundle is always `trunk` — its one PR is
-already a whole feature.
+**`docs/agents/git.md`** — the repo's agent-facing git conventions, scaffolded by `setup`:
+the declared branch strategy (`trunk` or `bundle-branch`; missing file means `trunk`),
+commit-message convention, PR conventions, release promotion. Agents read it before any git
+operation, and skills never restate what it declares.
 
 **`docs/decisions/`** — immutable; supersede with a new record, never edit. For anything durable and expensive to relitigate. Template lives with the `decision` skill.
 
