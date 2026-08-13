@@ -30,19 +30,20 @@ Posted as one PR review per round. The body ends with:
 
 ````markdown
 <!-- agentic:verdict -->
+
 ```yaml
-round: 2                 # increments per verdict on this PR, starting at 1
+round: 2 # increments per verdict on this PR, starting at 1
 sha: <full head SHA reviewed>
 blockers: 1
 concerns: 1
 nits: 0
 findings:
-  - id: F5               # stable for the finding's life; an ID is never reused on this PR
-    tier: blocker        # blocker | concern | nit
-    class: mechanical    # mechanical | decision
-    at: src/retry.ts:42  # path:line, or "PR body"
+  - id: F5 # stable for the finding's life; an ID is never reused on this PR
+    tier: blocker # blocker | concern | nit
+    class: mechanical # mechanical | decision
+    at: src/retry.ts:42 # path:line, or "PR body"
     title: <at most 15 words>
-backlog:                 # optional — pre-existing defects outside this change, one line each,
+backlog: # optional — pre-existing defects outside this change, one line each,
   - "[skills] <one line>" # in the consuming repo's backlog entry format
 ```
 ````
@@ -93,8 +94,9 @@ Posted as one PR comment after the round's push:
 
 ````markdown
 <!-- agentic:fix-round -->
+
 ```yaml
-round: 2                 # the verdict round this answers
+round: 2 # the verdict round this answers
 sha: <full head SHA after the fixes>
 findings:
   F5: { status: fixed, commit: <sha> }
@@ -114,12 +116,12 @@ human's audit trail — never a state input.
 State derives exclusively from the PR's own facts — the latest verdict's `sha` and
 `blockers` fields against the PR's current head SHA:
 
-| Condition                                        | State             |
-| ------------------------------------------------ | ----------------- |
-| No verdict on the PR                             | `needs-review`    |
-| Verdict `sha` = head SHA and `blockers` > 0      | `fixes-pending`   |
-| Verdict `sha` = head SHA and `blockers` = 0      | `awaiting-accept` |
-| Verdict `sha` ≠ head SHA                         | `needs-re-review` |
+| Condition                                   | State             |
+| ------------------------------------------- | ----------------- |
+| No verdict on the PR                        | `needs-review`    |
+| Verdict `sha` = head SHA and `blockers` > 0 | `fixes-pending`   |
+| Verdict `sha` = head SHA and `blockers` = 0 | `awaiting-accept` |
+| Verdict `sha` ≠ head SHA                    | `needs-re-review` |
 
 Timestamps, comment-thread structure, ticket frontmatter, and labels are never state
 inputs.
